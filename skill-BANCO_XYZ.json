@@ -1,0 +1,228 @@
+{
+  "name": "BANCO_XYZ",
+  "intents": [
+    {
+      "intent": "transferencia",
+      "examples": [
+        {
+          "text": "desejo fazer transferência"
+        },
+        {
+          "text": "fazer transferência"
+        },
+        {
+          "text": "preciso fazer uma transferência"
+        },
+        {
+          "text": "transferência"
+        },
+        {
+          "text": "tranferir"
+        }
+      ],
+      "description": "Transferência entre contas"
+    }
+  ],
+  "entities": [
+    {
+      "entity": "conta",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "conta corrente",
+          "synonyms": [
+            "cc",
+            "corrente"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "conta poupança",
+          "synonyms": [
+            "cp",
+            "poupança"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-currency",
+      "values": []
+    }
+  ],
+  "language": "pt-br",
+  "metadata": {
+    "api_version": {
+      "major_version": "v1",
+      "minor_version": "2018-09-20"
+    }
+  },
+  "description": "",
+  "dialog_nodes": [
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "Conta corrente ou poupança"
+      },
+      "parent": "slot_5_1559150454868",
+      "event_name": "focus",
+      "dialog_node": "handler_7_1559150454868",
+      "previous_sibling": "handler_6_1559150454868"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_5_1559150454868",
+      "context": {
+        "conta": "@conta"
+      },
+      "conditions": "@conta",
+      "event_name": "input",
+      "dialog_node": "handler_6_1559150454868"
+    },
+    {
+      "type": "slot",
+      "parent": "node_3_1559150426922",
+      "variable": "$currency",
+      "dialog_node": "slot_8_1559150487435",
+      "previous_sibling": "slot_5_1559150454868"
+    },
+    {
+      "type": "event_handler",
+      "parent": "node_3_1559150426922",
+      "event_name": "focus",
+      "dialog_node": "handler_4_1559150454837",
+      "previous_sibling": "slot_8_1559150487435"
+    },
+    {
+      "type": "slot",
+      "parent": "node_3_1559150426922",
+      "variable": "$conta",
+      "dialog_node": "slot_5_1559150454868",
+      "previous_sibling": "node_11_1559150625363"
+    },
+    {
+      "type": "standard",
+      "title": "true",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Destinatário da transferência <?input.text?>"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1559150426922",
+      "metadata": {},
+      "conditions": "true",
+      "dialog_node": "node_11_1559150625363"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "Qual o valor da transferência"
+      },
+      "parent": "slot_8_1559150487435",
+      "event_name": "focus",
+      "dialog_node": "handler_10_1559150487435",
+      "previous_sibling": "handler_9_1559150487435"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_8_1559150487435",
+      "context": {
+        "currency": "@sys-currency"
+      },
+      "conditions": "@sys-currency",
+      "event_name": "input",
+      "dialog_node": "handler_9_1559150487435"
+    },
+    {
+      "type": "standard",
+      "title": "Em outros casos",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Eu não entendi. Você pode tentar reformular a frase."
+              },
+              {
+                "text": "Você pode reformular sua afirmação? Eu não estou entendendo."
+              },
+              {
+                "text": "Eu não entendi o sentido."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "anything_else",
+      "dialog_node": "Em outros casos",
+      "previous_sibling": "node_3_1559150426922"
+    },
+    {
+      "type": "frame",
+      "title": "Transferência",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Por favor, informe o destinatário da transferência"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {
+        "fallback": "leave"
+      },
+      "conditions": "#transferencia",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_3_1559150426922",
+      "digress_out": "allow_all",
+      "previous_sibling": "Bem-vindo",
+      "digress_out_slots": "not_allowed"
+    },
+    {
+      "type": "standard",
+      "title": "Bem-vindo",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Olá. Seja Bem-vindo ao Banco XYZ ! Como posso te ajudar?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "welcome",
+      "dialog_node": "Bem-vindo"
+    }
+  ],
+  "workspace_id": "09db8636-297f-4ed7-867d-9797da709263",
+  "counterexamples": [],
+  "system_settings": {
+    "tooling": {
+      "store_generic_responses": true
+    }
+  },
+  "learning_opt_out": false,
+  "status": "Available"
+}
